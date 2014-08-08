@@ -1,0 +1,7 @@
+{
+  "name": "ptica/BootstrapCake",
+  "version": "0.0.1",
+  "require": {
+    "cakephp/cakephp": "2.5.*"
+  }
+}
