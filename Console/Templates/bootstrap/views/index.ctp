@@ -18,19 +18,15 @@
  */
 ?>
 <div class="<?php echo $pluralVar; ?> index">
-
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
 				<h1><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></h1>
 			</div>
-		</div><!-- end col md 12 -->
-	</div><!-- end row -->
-
-
+		</div>
+	</div>
 
 	<div class="row">
-
 		<div class="col-md-3">
 			<div class="actions">
 				<div class="panel panel-default">
@@ -38,7 +34,7 @@
 						<div class="panel-body">
 							<ul class="nav nav-pills nav-stacked">
 								<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
-						<?php
+<?php
 							$done = array();
 							foreach ($associations as $type => $data) {
 								foreach ($data as $alias => $details) {
@@ -49,8 +45,7 @@
 									}
 								}
 							}
-						?>
-							</ul>
+?>							</ul>
 						</div><!-- end body -->
 				</div><!-- end panel -->
 			</div><!-- end actions -->
@@ -125,4 +120,4 @@
 	</div><!-- end row -->
 
 
-</div><!-- end containing of content -->
+</div>

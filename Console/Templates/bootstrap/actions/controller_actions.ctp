@@ -19,23 +19,11 @@
  */
 ?>
 
-/**
- * <?php echo $admin ?>index method
- *
- * @return void
- */
 	public function <?php echo $admin ?>index() {
 		$this-><?php echo $currentModelName ?>->recursive = 0;
 		$this->set('<?php echo $pluralName ?>', $this->Paginator->paginate());
 	}
 
-/**
- * <?php echo $admin ?>view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
 	public function <?php echo $admin ?>view($id = null) {
 		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 			throw new NotFoundException(__('Invalid <?php echo strtolower($singularHumanName); ?>'));
@@ -45,11 +33,6 @@
 	}
 
 <?php $compact = array(); ?>
-/**
- * <?php echo $admin ?>add method
- *
- * @return void
- */
 	public function <?php echo $admin ?>add() {
 		if ($this->request->is('post')) {
 			$this-><?php echo $currentModelName; ?>->create();
@@ -82,13 +65,6 @@
 	}
 
 <?php $compact = array(); ?>
-/**
- * <?php echo $admin ?>edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
 	public function <?php echo $admin; ?>edit($id = null) {
 		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 			throw new NotFoundException(__('Invalid <?php echo strtolower($singularHumanName); ?>'));
@@ -125,13 +101,6 @@
 	?>
 	}
 
-/**
- * <?php echo $admin ?>delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
 	public function <?php echo $admin; ?>delete($id = null) {
 		$this-><?php echo $currentModelName; ?>->id = $id;
 		if (!$this-><?php echo $currentModelName; ?>->exists()) {
