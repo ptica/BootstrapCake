@@ -31,6 +31,7 @@
 
 	<div class="row">
 		<div class="col-md-3">
+			<?php echo "<?php echo \$this->element('admin_navigation'); ?>\n"; ?>
 			<div class="actions">
 				<div class="panel panel-default">
 					<div class="panel-heading">Actions</div>

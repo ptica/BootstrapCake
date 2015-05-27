@@ -18,6 +18,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+
 echo "<?php\n";
 echo "App::uses('{$plugin}AppController', '{$pluginPath}Controller');\n";
 ?>
@@ -60,7 +62,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	endif;
 
 	if (!empty($actions)) {
-		echo trim($actions) . "\n";
+		echo rtrim($actions) . "\n";
 	}
 
 endif; ?>

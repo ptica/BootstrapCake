@@ -17,6 +17,14 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
+<?php
+	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+	if (!$include_id_column) {
+		if (($key = array_search('id', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+	}
+?>
 <div class="<?php echo $pluralVar; ?> index">
 	<div class="row">
 		<div class="col-md-12">
@@ -28,6 +36,7 @@
 
 	<div class="row">
 		<div class="col-md-3">
+			<?php echo "<?php echo \$this->element('admin_navigation'); ?>\n"; ?>
 			<div class="actions">
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php echo "<?php echo __('Actions'); ?>"; ?></div>
@@ -82,7 +91,7 @@
 				}
 
 				echo "\t\t\t\t\t\t<td class=\"actions\">\n";
-				echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-search\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
+				if ($include_view_action) echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-search\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
 				echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-edit\"></span>', array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
 				echo "\t\t\t\t\t\t\t<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>', array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
 				echo "\t\t\t\t\t\t</td>\n";
