@@ -90,9 +90,24 @@
 			if (strpos($action, 'add') !== false && $field == $primaryKey) {
 				continue;
 			} elseif (!in_array($field, array('created', 'modified', 'updated'))) {
-				echo "\t\t\t\t<div class=\"form-group\">\n";
-				echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array('class' => 'form-control', 'placeholder' => __('".Inflector::humanize($field)."')));?>\n";
-				echo "\t\t\t\t</div>\n";
+				if ($schema[$field]['type'] == 'datetime') {
+					echo "\t\t\t\t<div class=\"form-group\">\n";
+					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array(\n";
+					echo "\t\t\t\t\t\t'type' => 'text',\n";
+					echo "\t\t\t\t\t\t'data-provide' => 'datepicker',\n";
+					echo "\t\t\t\t\t\t'data-date-language' => Configure::read('Config.locale'),\n";
+					echo "\t\t\t\t\t\t'class' => 'form-control',\n";
+					echo "\t\t\t\t\t\t'label' => __('".Inflector::humanize($field)."'),\n";
+					echo "\t\t\t\t\t\t'placeholder' => __('".Inflector::humanize($field)."'),\n";
+					echo "\t\t\t\t\t\t'inputGroup' => array('append'=>'glyphicon-th'),\n";
+					echo "\t\t\t\t\t\t//BEWARE: datepicker needs JS initialization\n";
+					echo "\t\t\t\t\t));?>\n";
+					echo "\t\t\t\t</div>\n";
+				} else {
+					echo "\t\t\t\t<div class=\"form-group\">\n";
+					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array('class' => 'form-control', 'placeholder' => __('".Inflector::humanize($field)."')));?>\n";
+					echo "\t\t\t\t</div>\n";
+				}
 			}
 		}
 		if (!empty($associations['hasAndBelongsToMany'])) {
@@ -105,7 +120,7 @@
 ?>
 <?php
 				echo "\t\t\t\t<div class=\"form-group\">\n";
-				echo "\t\t\t\t\t<?php echo \$this->Form->submit(__('Submit'), array('class' => 'btn btn-default')); ?>\n";
+				echo "\t\t\t\t\t<?php echo \$this->Form->submit(__('Submit'), array('class' => 'btn btn-primary')); ?>\n";
 				echo "\t\t\t\t</div>\n\n";
 
 			echo "\t\t\t<?php echo \$this->Form->end() ?>\n\n";
