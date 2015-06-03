@@ -28,16 +28,16 @@
 				<?php if ($top_row_actions) { ?>
 					<ul class="nav nav-pills pull-right">
 					<?php if (strpos($action, 'add') === false): ?>
-							<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action' => 'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape' => false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
+							<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape'=>false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
 					<?php endif; ?>
-							<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action' => 'index'), array('escape' => false)); ?>"; ?></li>
+							<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
 					<?php
 							$done = array();
 							foreach ($associations as $type => $data) {
 								foreach ($data as $alias => $details) {
 									if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
+										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
 										$done[] = $details['controller'];
 									}
 								}
@@ -62,16 +62,16 @@
 						<div class="panel-body">
 							<ul class="nav nav-pills nav-stacked">
 							<?php if (strpos($action, 'add') === false): ?>
-									<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action' => 'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape' => false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
+									<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape' => false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
 							<?php endif; ?>
-									<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action' => 'index'), array('escape' => false)); ?>"; ?></li>
+									<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
 							<?php
 									$done = array();
 									foreach ($associations as $type => $data) {
 										foreach ($data as $alias => $details) {
 											if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-												echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-												echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+												echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
+												echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
 												$done[] = $details['controller'];
 											}
 										}
@@ -84,13 +84,17 @@
 			<?php } ?>
 		</div><!-- end col md 3 -->
 		<div class="col-md-9">
-<?php 		echo "\t\t\t<?php echo \$this->Form->create('{$modelClass}', array('role' => 'form')); ?>\n\n"; ?>
+<?php 		echo "\t\t\t<?php echo \$this->Form->create('{$modelClass}', array('role'=>'form', 'class'=>'form-horizontal')); ?>\n\n"; ?>
 <?php
 		foreach ($fields as $field) {
 			if (strpos($action, 'add') !== false && $field == $primaryKey) {
 				continue;
 			} elseif (!in_array($field, array('created', 'modified', 'updated'))) {
-				if ($schema[$field]['type'] == 'datetime') {
+				if ($schema[$field]['type'] == 'text') {
+					echo "\t\t\t\t<div class=\"form-group\">\n";
+					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array('data-provide'=>'wysiwyg', 'class'=>'form-control', 'placeholder'=>__('".Inflector::humanize($field)."')));?>\n";
+					echo "\t\t\t\t</div>\n";
+				} elseif ($schema[$field]['type'] == 'datetime') {
 					echo "\t\t\t\t<div class=\"form-group\">\n";
 					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array(\n";
 					echo "\t\t\t\t\t\t'type' => 'text',\n";
@@ -105,7 +109,7 @@
 					echo "\t\t\t\t</div>\n";
 				} else {
 					echo "\t\t\t\t<div class=\"form-group\">\n";
-					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array('class' => 'form-control', 'placeholder' => __('".Inflector::humanize($field)."')));?>\n";
+					echo "\t\t\t\t\t<?php echo \$this->Form->input('{$field}', array('class'=>'form-control', 'placeholder'=>__('".Inflector::humanize($field)."')));?>\n";
 					echo "\t\t\t\t</div>\n";
 				}
 			}
@@ -113,14 +117,16 @@
 		if (!empty($associations['hasAndBelongsToMany'])) {
 			foreach ($associations['hasAndBelongsToMany'] as $assocName => $assocData) {
 				echo "\t\t\t\t<div class=\"form-group\">\n";
-				echo "\t\t\t\t\t<?php echo \$this->Form->input('{$assocName}', array('class' => 'form-control', 'placeholder' => __('".Inflector::humanize($field)."')));?>\n";
+				echo "\t\t\t\t\t<?php echo \$this->Form->input('{$assocName}', array('class'=>'form-control', 'placeholder'=>__('".Inflector::humanize($field)."')));?>\n";
 				echo "\t\t\t\t</div>\n";
 			}
 		}
 ?>
 <?php
 				echo "\t\t\t\t<div class=\"form-group\">\n";
-				echo "\t\t\t\t\t<?php echo \$this->Form->submit(__('Submit'), array('class' => 'btn btn-primary')); ?>\n";
+				echo "\t\t\t\t\t<div class=\"col-sm-offset-2 col-sm-8\">\n";
+				echo "\t\t\t\t\t\t<?php echo \$this->Form->submit(__('Submit'), array('class'=>'btn btn-primary')); ?>\n";
+				echo "\t\t\t\t\t</div>\n\n";
 				echo "\t\t\t\t</div>\n\n";
 
 			echo "\t\t\t<?php echo \$this->Form->end() ?>\n\n";
