@@ -37,8 +37,8 @@
 					foreach ($associations as $type => $data) {
 						foreach ($data as $alias => $details) {
 							if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-								echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-								echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+								echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
+								echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
 								$done[] = $details['controller'];
 							}
 						}
@@ -90,7 +90,7 @@
 				</thead>
 				<tbody>
 			<?php
-			echo "\t<?php foreach (\${$pluralVar} as \${$singularVar}): ?>\n";
+			echo "\t<?php foreach (\${$pluralVar} as \${$singularVar}) { ?>\n";
 			echo "\t\t\t\t\t<tr>\n";
 				foreach ($fields as $field) {
 					$isKey = false;
@@ -118,7 +118,7 @@
 				echo "\t\t\t\t\t\t</td>\n";
 			echo "\t\t\t\t\t</tr>\n";
 
-			echo "\t\t\t\t<?php endforeach; ?>\n";
+			echo "\t\t\t\t<?php } ?>\n";
 			?>
 				</tbody>
 			</table>
