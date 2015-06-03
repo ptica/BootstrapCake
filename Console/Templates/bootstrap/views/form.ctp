@@ -27,17 +27,17 @@
 			<div class="page-header">
 				<?php if ($top_row_actions) { ?>
 					<ul class="nav nav-pills pull-right">
-					<?php if (strpos($action, 'add') === false): ?>
+<?php   				if (strpos($action, 'add') === false): ?>
 							<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape'=>false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
-					<?php endif; ?>
+<?php 					endif; ?>
 							<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
-					<?php
+<?php
 							$done = array();
 							foreach ($associations as $type => $data) {
 								foreach ($data as $alias => $details) {
 									if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
-										echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
+										if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
+										if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
 										$done[] = $details['controller'];
 									}
 								}

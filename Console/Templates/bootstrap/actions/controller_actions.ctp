@@ -17,12 +17,24 @@
  * @since         CakePHP(tm) v 1.3
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
+$schema = $modelObj->schema();
 ?>
 
 	public function <?php echo $admin ?>index() {
 		$this-><?php echo $currentModelName ?>->recursive = 0;
 		$this->set('<?php echo $pluralName ?>', $this->Paginator->paginate());
 	}
+
+<?php if (!empty($schema['ord'])) { ?>
+	public function <?php echo $admin ?>reorder() {
+		if ($this->request->is('post')) {
+			$this-><?php echo $currentModelName ?>->saveMany($this->request->data);
+			exit();
+		}
+		$this->set('<?php echo $pluralName ?>', $this-><?php echo $currentModelName ?>->find('all'));
+	}
+<?php } ?>
 
 	public function <?php echo $admin ?>view($id = null) {
 		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {

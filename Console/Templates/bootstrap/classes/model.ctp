@@ -20,6 +20,11 @@
 
 echo "<?php\n";
 echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n";
+
+// get schema via tempModel
+$tempModel = new Model(array('name'=>$name, 'table'=>$useTable, 'ds'=>'default'));
+$schema = $tempModel->schema();
+$dateFields = array_keys(Hash::remove($schema, '{s}[type!=datetime]'));
 ?>
 
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
@@ -40,6 +45,23 @@ if ($primaryKey !== 'id'): ?>
 if ($displayField): ?>
 	public $displayField = '<?php echo $displayField; ?>';
 
+<?php endif;
+
+if (!empty($schema['ord'])): ?>
+	public $order = array('<?php echo $name?>.ord'=>'asc');
+
+<?php endif;
+
+if (!empty($dateFields)): ?>
+	public $dateFields  = array('<?php echo join("', '", $dateFields) ?>');
+
+	public $virtualFields = array(
+<?php
+		foreach ($dateFields as $field) {
+			echo "\t\t'$field' => \"DATE_FORMAT(`$name`.`$field`, '%e.%c.%Y')\",\n";
+		}
+?>
+	);
 <?php endif;
 
 if (!empty($actsAs)): ?>

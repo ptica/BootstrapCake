@@ -19,14 +19,6 @@
 ?>
 <?php
 	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
-	if (!$include_id_column) {
-		if (($key = array_search('id', $fields)) !== false) {
-			unset($fields[$key]);
-		}
-		if (($key = array_search('ord', $fields)) !== false) {
-			unset($fields[$key]);
-		}
-	}
 ?>
 <div class="<?php echo $pluralVar; ?> index">
 	<div class="row">
@@ -85,75 +77,15 @@
 		</div><!-- end col md 3 -->
 
 		<div class="col-md-9">
-			<table cellpadding="0" cellspacing="0" class="table table-striped">
-				<thead>
-					<tr>
-			<?php foreach ($fields as $field): ?>
-			<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
-			<?php endforeach; ?>
-			<th class="actions"></th>
-					</tr>
-				</thead>
-				<tbody>
-			<?php
-			echo "\t<?php foreach (\${$pluralVar} as \${$singularVar}) { ?>\n";
-			echo "\t\t\t\t\t<tr>\n";
-				foreach ($fields as $field) {
-					$isKey = false;
-					if (!empty($associations['belongsTo'])) {
-						foreach ($associations['belongsTo'] as $alias => $details) {
-							if ($field === $details['foreignKey']) {
-								$isKey = true;
-								echo "\t\t\t\t\t\t\t\t<td>\n\t\t\t<?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], array('controller' => '{$details['controller']}', 'action' => 'view', \${$singularVar}['{$alias}']['{$details['primaryKey']}'])); ?>\n\t\t</td>\n";
-								break;
-							}
-						}
-					}
-					if ($schema[$field]['type'] == 'datetime') {
-						echo "\t\t\t\t\t\t<td><?php echo \$this->Time->format(\${$singularVar}['{$modelClass}']['{$field}'], '{$datetime_format}'); ?></td>\n";
-					} else
-					if ($isKey !== true) {
-						echo "\t\t\t\t\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?></td>\n";
-					}
-				}
-
-				echo "\t\t\t\t\t\t<td class=\"actions\">\n";
-				if ($include_view_action) echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-search\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
-				echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-edit\"></span>', array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
-				echo "\t\t\t\t\t\t\t<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>', array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
-				echo "\t\t\t\t\t\t</td>\n";
-			echo "\t\t\t\t\t</tr>\n";
-
-			echo "\t\t\t\t<?php } ?>\n";
-			?>
-				</tbody>
-			</table>
-
-			<p>
-				<small><?php echo "<?php echo \$this->Paginator->counter(array('format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')));?>"; ?></small>
-			</p>
-
-			<?php
-				echo "<?php\n";
-				echo "\t\t\t\$params = \$this->Paginator->params();\n";
-				echo "\t\t\tif (\$params['pageCount'] > 1) {\n";
-				echo "\t\t\t?>\n";
-			?>
-			<ul class="pagination pagination-sm">
-			<?php
-				echo "\t<?php\n";
-				echo "\t\t\t\t\techo \$this->Paginator->prev('&larr; Previous', array('class' => 'prev','tag' => 'li','escape' => false), '<a onclick=\"return false;\">&larr; Previous</a>', array('class' => 'prev disabled','tag' => 'li','escape' => false));\n";
-				echo "\t\t\t\t\techo \$this->Paginator->numbers(array('separator' => '','tag' => 'li','currentClass' => 'active','currentTag' => 'a'));\n";
-				echo "\t\t\t\t\techo \$this->Paginator->next('Next &rarr;', array('class' => 'next','tag' => 'li','escape' => false), '<a onclick=\"return false;\">Next &rarr;</a>', array('class' => 'next disabled','tag' => 'li','escape' => false));\n";
-				echo "\t\t\t\t?>\n";
-			?>
-			</ul>
-			<?php
-				echo "<?php } ?>\n";
-			?>
-
+			<div id="sortable<?php echo ucfirst($pluralVar) ?>" class="list-group" data-reorder-url="<?php echo Router::url(array('controller'=>$pluralVar, 'action'=>'reorder', 'admin'=>true)) ?>">
+				<?php echo "<?php foreach ($".$pluralVar." as \$item) {?>\n" ?>
+					<div class="list-group-item" data-item-id="<?php echo "<?php echo h(\$item['".$modelClass."']['id']); ?>" ?>">
+						<span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+						<?php echo "<?php echo \$this->Html->link(\$item['".$modelClass."']['name'], array('action' => 'index', \$item['$modelClass']['id'])); ?>" ?>
+					</div>
+				<?php echo "<?php } ?>\n" ?>
+			</div>
 		</div> <!-- end col md 9 -->
 	</div><!-- end row -->
-
 
 </div>
