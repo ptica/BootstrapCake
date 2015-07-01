@@ -19,32 +19,37 @@
 ?>
 <?php
 	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+	if (!$include_ord_field) {
+		if (($key = array_search('ord', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+	}
 ?>
 <div class="<?php echo $pluralVar; ?> form">
 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
-				<?php if ($top_row_actions) { ?>
-					<ul class="nav nav-pills pull-right">
-<?php   				if (strpos($action, 'add') === false): ?>
-							<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape'=>false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
-<?php 					endif; ?>
-							<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
+<?php   		if ($top_row_actions) { ?>
+				<ul class="nav nav-pills pull-right">
+<?php   			if (strpos($action, 'add') === false): ?>
+					<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape'=>false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
+<?php   			endif; ?>
+					<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
 <?php
-							$done = array();
-							foreach ($associations as $type => $data) {
-								foreach ($data as $alias => $details) {
-									if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-										if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
-										if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
-										$done[] = $details['controller'];
-									}
+						$done = array();
+						foreach ($associations as $type => $data) {
+							foreach ($data as $alias => $details) {
+								if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
+									if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller'=>'{$details['controller']}', 'action'=>'index'), array('escape'=>false)); ?> </li>\n";
+									if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller'=>'{$details['controller']}', 'action'=>'add'), array('escape'=>false)); ?> </li>\n";
+									$done[] = $details['controller'];
 								}
 							}
+						}
 					?>
-					</ul>
-				<?php } ?>
+				</ul>
+<?php   		} ?>
 				<h1><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></h1>
 			</div>
 		</div>
@@ -55,17 +60,17 @@
 	<div class="row">
 		<div class="col-md-3">
 			<?php echo "<?php echo \$this->element('admin_navigation'); ?>\n"; ?>
-			<?php if (!$top_row_actions) { ?>
+<?php   		if (!$top_row_actions) { ?>
 				<div class="actions">
 					<div class="panel panel-default">
 						<div class="panel-heading">Actions</div>
 						<div class="panel-body">
 							<ul class="nav nav-pills nav-stacked">
-							<?php if (strpos($action, 'add') === false): ?>
+<?php   						if (strpos($action, 'add') === false): ?>
 									<li><?php echo "<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete'), array('action'=>'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), array('escape' => false), __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
-							<?php endif; ?>
+<?php   						endif; ?>
 									<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . $pluralHumanName . "'), array('action'=>'index'), array('escape'=>false)); ?>"; ?></li>
-							<?php
+<?php
 									$done = array();
 									foreach ($associations as $type => $data) {
 										foreach ($data as $alias => $details) {
@@ -81,7 +86,7 @@
 						</div>
 					</div>
 				</div>
-			<?php } ?>
+<?php   		} ?>
 		</div><!-- end col md 3 -->
 		<div class="col-md-9">
 <?php 		echo "\t\t\t<?php echo \$this->Form->create('{$modelClass}', array('role'=>'form', 'class'=>'form-horizontal')); ?>\n\n"; ?>

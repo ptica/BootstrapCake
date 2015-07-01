@@ -17,6 +17,14 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
+<?php
+	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+	if (!$include_ord_field) {
+		if (($key = array_search('ord', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+	}
+?>
 <div class="<?php echo $pluralVar; ?> view">
 	<div class="row">
 		<div class="col-md-12">

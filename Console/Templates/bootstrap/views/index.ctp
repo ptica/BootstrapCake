@@ -33,24 +33,24 @@
 		<div class="col-md-12">
 			<div class="page-header">
 <?php 			if ($top_row_actions) { ?>
-					<ul class="nav nav-pills pull-right">
-						<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
+				<ul class="nav nav-pills pull-right">
+					<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
 <?php
 					if (!empty($schema['ord'])) { ?>
-						<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-sort\"></span>&nbsp;&nbsp;' . __('Reorder'), array('action' => 'reorder'), array('escape' => false)); ?>"; ?></li>
+					<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-sort\"></span>&nbsp;&nbsp;' . __('Reorder'), array('action' => 'reorder'), array('escape' => false)); ?>"; ?></li>
 <?php				}
 					$done = array();
 					foreach ($associations as $type => $data) {
 						foreach ($data as $alias => $details) {
 							if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-								if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-								if (0) echo "\t\t\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+								if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
+								if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
 								$done[] = $details['controller'];
 							}
 						}
 					}
-?>					</ul>
-				<?php } ?>
+?>				</ul>
+<?php   		} ?>
 				<h1><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></h1>
 			</div>
 		</div>
