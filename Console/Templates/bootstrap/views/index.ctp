@@ -17,43 +17,71 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
+<?php
+	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+	if (!$include_id_column) {
+		if (($key = array_search('id', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+		if (($key = array_search('ord', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+	}
+?>
 <div class="<?php echo $pluralVar; ?> index">
-
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
+<?php 			if ($top_row_actions) { ?>
+				<ul class="nav nav-pills pull-right">
+					<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
+<?php
+					if (!empty($schema['ord'])) { ?>
+					<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-sort\"></span>&nbsp;&nbsp;' . __('Reorder'), array('action' => 'reorder'), array('escape' => false)); ?>"; ?></li>
+<?php				}
+					$done = array();
+					foreach ($associations as $type => $data) {
+						foreach ($data as $alias => $details) {
+							if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
+								if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
+								if (0) echo "\t\t\t\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+								$done[] = $details['controller'];
+							}
+						}
+					}
+?>				</ul>
+<?php   		} ?>
 				<h1><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></h1>
 			</div>
-		</div><!-- end col md 12 -->
-	</div><!-- end row -->
-
-
+		</div>
+	</div>
 
 	<div class="row">
-
 		<div class="col-md-3">
-			<div class="actions">
-				<div class="panel panel-default">
-					<div class="panel-heading"><?php echo "<?php echo __('Actions'); ?>"; ?></div>
-						<div class="panel-body">
-							<ul class="nav nav-pills nav-stacked">
-								<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
-						<?php
-							$done = array();
-							foreach ($associations as $type => $data) {
-								foreach ($data as $alias => $details) {
-									if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-										echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-										echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
-										$done[] = $details['controller'];
+			<?php echo "<?php echo \$this->element('admin_navigation'); ?>\n"; ?>
+			<?php if (!$top_row_actions) { ?>
+				<div class="actions">
+					<div class="panel panel-default">
+						<div class="panel-heading"><?php echo "<?php echo __('Actions'); ?>"; ?></div>
+							<div class="panel-body">
+								<ul class="nav nav-pills nav-stacked">
+									<li><?php echo "<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?>"; ?></li>
+	<?php
+								$done = array();
+								foreach ($associations as $type => $data) {
+									foreach ($data as $alias => $details) {
+										if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
+											echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-list\"></span>&nbsp;&nbsp;List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
+											echo "\t\t<li><?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+											$done[] = $details['controller'];
+										}
 									}
 								}
-							}
-						?>
-							</ul>
-						</div><!-- end body -->
-				</div><!-- end panel -->
-			</div><!-- end actions -->
+	?>							</ul>
+							</div><!-- end body -->
+					</div><!-- end panel -->
+				</div><!-- end actions -->
+			<?php } ?>
 		</div><!-- end col md 3 -->
 
 		<div class="col-md-9">
@@ -68,7 +96,7 @@
 				</thead>
 				<tbody>
 			<?php
-			echo "\t<?php foreach (\${$pluralVar} as \${$singularVar}): ?>\n";
+			echo "\t<?php foreach (\${$pluralVar} as \${$singularVar}) { ?>\n";
 			echo "\t\t\t\t\t<tr>\n";
 				foreach ($fields as $field) {
 					$isKey = false;
@@ -81,19 +109,22 @@
 							}
 						}
 					}
+					if ($schema[$field]['type'] == 'datetime') {
+						echo "\t\t\t\t\t\t<td><?php echo \$this->Time->format(\${$singularVar}['{$modelClass}']['{$field}'], '{$datetime_format}'); ?></td>\n";
+					} else
 					if ($isKey !== true) {
-						echo "\t\t\t\t\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
+						echo "\t\t\t\t\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?></td>\n";
 					}
 				}
 
 				echo "\t\t\t\t\t\t<td class=\"actions\">\n";
-				echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-search\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
+				if ($include_view_action) echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-search\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
 				echo "\t\t\t\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-edit\"></span>', array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?>\n";
 				echo "\t\t\t\t\t\t\t<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>', array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
 				echo "\t\t\t\t\t\t</td>\n";
 			echo "\t\t\t\t\t</tr>\n";
 
-			echo "\t\t\t\t<?php endforeach; ?>\n";
+			echo "\t\t\t\t<?php } ?>\n";
 			?>
 				</tbody>
 			</table>
@@ -125,4 +156,4 @@
 	</div><!-- end row -->
 
 
-</div><!-- end containing of content -->
+</div>

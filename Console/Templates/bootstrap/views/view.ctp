@@ -17,6 +17,14 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
+<?php
+	include(dirname(dirname(__FILE__)) . DS .  'common_params.php');
+	if (!$include_ord_field) {
+		if (($key = array_search('ord', $fields)) !== false) {
+			unset($fields[$key]);
+		}
+	}
+?>
 <div class="<?php echo $pluralVar; ?> view">
 	<div class="row">
 		<div class="col-md-12">
@@ -27,25 +35,24 @@
 	</div>
 
 	<div class="row">
-
 		<div class="col-md-3">
+			<?php echo "<?php echo \$this->element('admin_navigation'); ?>\n"; ?>
 			<div class="actions">
 				<div class="panel panel-default">
 					<div class="panel-heading">Actions</div>
 						<div class="panel-body">
 							<ul class="nav nav-pills nav-stacked">
-							<?php
-								echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-edit\"></span>&nbsp&nbsp;' . __('Edit " . $singularHumanName ."'), array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?> </li>\n";
-								echo "\t\t<li><?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete " . $singularHumanName . "'), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?> </li>\n";
-								echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp&nbsp;' . __('List " . $pluralHumanName . "'), array('action' => 'index'), array('escape' => false)); ?> </li>\n";
-								echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?> </li>\n";
-
+								<?php echo "<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-edit\"></span>&nbsp&nbsp;' . __('Edit " . $singularHumanName ."'), array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false)); ?> </li>\n"; ?>
+								<?php echo "<li><?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;' . __('Delete " . $singularHumanName . "'), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('escape' => false), __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?> </li>\n"; ?>
+								<?php echo "<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp&nbsp;' . __('List " . $pluralHumanName . "'), array('action' => 'index'), array('escape' => false)); ?> </li>\n"; ?>
+								<?php echo "<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp&nbsp;' . __('New " . $singularHumanName . "'), array('action' => 'add'), array('escape' => false)); ?> </li>\n"; ?>
+<?php
 								$done = array();
 								foreach ($associations as $type => $data) {
 									foreach ($data as $alias => $details) {
-										if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-											echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n";
-											echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
+										if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) { ?>
+								<?php   	echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-list\"></span>&nbsp&nbsp;' . __('List " . Inflector::humanize($details['controller']) . "'), array('controller' => '{$details['controller']}', 'action' => 'index'), array('escape' => false)); ?> </li>\n"; ?>
+								<?php   	echo "\t\t<li><?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-plus\"></span>&nbsp&nbsp;' . __('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add'), array('escape' => false)); ?> </li>\n";
 											$done[] = $details['controller'];
 										}
 									}
@@ -60,30 +67,30 @@
 		<div class="col-md-9">
 			<table cellpadding="0" cellspacing="0" class="table table-striped">
 				<tbody>
-				<?php
-				foreach ($fields as $field) {
-					echo "<tr>\n";
+<?php   		foreach ($fields as $field) { ?>
+					<?php echo "<tr>\n";
 					$isKey = false;
 					if (!empty($associations['belongsTo'])) {
 						foreach ($associations['belongsTo'] as $alias => $details) {
 							if ($field === $details['foreignKey']) {
-								$isKey = true;
-								echo "\t\t<th><?php echo __('" . Inflector::humanize(Inflector::underscore($alias)) . "'); ?></th>\n";
-								echo "\t\t<td>\n\t\t\t<?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], array('controller' => '{$details['controller']}', 'action' => 'view', \${$singularVar}['{$alias}']['{$details['primaryKey']}'])); ?>\n\t\t\t&nbsp;\n\t\t</td>\n";
+								$isKey = true; ?>
+								<?php echo "<th><?php echo __('" . Inflector::humanize(Inflector::underscore($alias)) . "'); ?></th>\n"; ?>
+								<?php echo "<td>\n\t\t\t<?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], array('controller' => '{$details['controller']}', 'action' => 'view', \${$singularVar}['{$alias}']['{$details['primaryKey']}'])); ?>\n\t\t\t&nbsp;\n\t\t</td>\n";
 								break;
 							}
 						}
 					}
-					if ($isKey !== true) {
-						echo "\t\t<th><?php echo __('" . Inflector::humanize($field) . "'); ?></th>\n";
-						echo "\t\t<td>\n\t\t\t<?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>\n\t\t\t&nbsp;\n\t\t</td>\n";
-					}
-					echo "</tr>\n";
+					if ($isKey !== true) { ?>
+						<?php echo "<th><?php echo __('" . Inflector::humanize($field) . "'); ?></th>\n"; ?>
+						<?php echo "<td>\n"; ?>
+							<?php echo "<?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>\n"; ?>
+						<?php echo "</td>\n";
+					} ?>
+					<?php echo "</tr>\n";
 				}
 				?>
 				</tbody>
 			</table>
-
 		</div><!-- end col md 9 -->
 
 	</div>
